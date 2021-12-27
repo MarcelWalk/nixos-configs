@@ -1,12 +1,5 @@
 { config, pkgs, lib, ... }: {
 	home = {
-		file = {
-			bin = {
-				source = ./bin;
-				target = ".local/bin";
-				recursive = true;
-			};
-		};
         packages = with pkgs; [
           solargraph
         ];
@@ -59,13 +52,6 @@
 				NIX_AUTO_RUN = 1;
 				MOZ_USE_XINPUT2 = 1;
 			};
-		};
-
-		dircolors = {
-			enable = true;
-			enableZshIntegration = true;
-
-			extraConfig = (builtins.readFile ./dircolors);
 		};
 
 		direnv = {
