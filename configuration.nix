@@ -18,9 +18,9 @@
             grub = {
                 enable = true;
                 version = 2;
-                # efiSupport = true;
+                efiSupport = true;
                 # efiInstallAsRemovable = true;
-                # efiSysMountPoint = "/boot/efi";
+                efiSysMountPoint = "/boot/efi";
                 device = "/dev/vda";
             };
         };
@@ -28,18 +28,18 @@
 
     # NETWORKING
     networking = {
-        hostName = "nixos"; # Define your hostname.
+        hostName = "walkm-nixos"; # Define your hostname.
         useDHCP = false; #DHCP here deprecated
         interfaces.enp3s0.useDHCP = true;
         # firewall.allowedTCPPorts = [ ... ];
         # firewall.allowedUDPPorts = [ ... ];
-        # firewall.enable = false;
+        firewall.enable = true;
     };
 
     # CONSOLE
     console = {
 		font = "Lat2-Terminus16";
-		keyMap = "us";
+		keyMap = "en";
 	};
 
     # LOCALIZATION
@@ -50,9 +50,12 @@
     environment.systemPackages = with pkgs; [
         neovim
         wget
-        chromium
+        firefox
         alacritty
         i3-gaps
+        i3blocks
+        dunst
+        iwd
         feh
         zsh
     ];
@@ -71,6 +74,16 @@
     # X11
     services.xserver = {
         enable = true;
+        displayManager.lightdm.greeters.mini = {
+            enable = true;
+            user = "walkm";
+            extraConfig = ''
+                [greeter]
+                show-password-label = false
+                [greeter-theme]
+                background-image = ""
+            '';
+        };
         layout = "us";
         # ibinput.enable = true;
         windowManager = {
@@ -94,13 +107,6 @@
     users.users.mwalk = {
         isNormalUser = true;
         extraGroups = [ "wheel" ];
-        packages = with pkgs; [
-				pavucontrol flameshot
-				discord element-desktop
-				git 
-				python3 direnv lutris
-				steam 
-		];
     };
 
     environment.variables = {
@@ -133,5 +139,4 @@
 	};
 
     system.stateVersion = "21.11";
-    
 }

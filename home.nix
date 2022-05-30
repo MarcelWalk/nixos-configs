@@ -1,8 +1,11 @@
 { config, pkgs, lib, ... }: {
 	home = {
         packages = with pkgs; [
-          solargraph
-        ];
+				pavucontrol flameshot
+				discord element-desktop
+				git 
+				python3 direnv anydesk
+		];
 		sessionVariables = {
 			EDITOR = "nvim";
 			VISUAL = "nvim";
