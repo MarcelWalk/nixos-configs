@@ -1,12 +1,10 @@
 { config, pkgs, lib, options, ... }:
-
+let
+    home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+in
 {
-
-    # IMPORTS
-    imports =
-    [
-        #./hardware-configuration.nix
-        <home-manager/nixos>
+    imports = [
+        (import "${home-manager}/nixos")
     ];
 
     # ALLOW NON-FREE
@@ -19,9 +17,9 @@
                 enable = true;
                 version = 2;
                 efiSupport = true;
-                # efiInstallAsRemovable = true;
+                efiInstallAsRemovable = true;
                 efiSysMountPoint = "/boot/efi";
-                device = "/dev/vda";
+                device = "/dev/change_me";
             };
         };
     };
@@ -50,14 +48,20 @@
     environment.systemPackages = with pkgs; [
         neovim
         wget
-        firefox
+        opera
         alacritty
         i3-gaps
-        i3blocks
+        polybar
         dunst
         iwd
         feh
+        maim
+        xclip
         zsh
+        nmap
+        vscode
+        htop
+        neofetch
     ];
     environment.pathsToLink = [ "/share/zsh" ];
 
@@ -81,23 +85,28 @@
                 [greeter]
                 show-password-label = false
                 [greeter-theme]
-                background-image = ""
+                background-image = "./wallpaper.jpg"
             '';
         };
         layout = "us";
         # ibinput.enable = true;
+        videoDrivers = [ "nvidia" ];
         windowManager = {
+            i3.package = pkgs.i3-gaps;
             i3.enable = true;
         };
     };
 
-    # SOUND
-    sound.enable = true;
-    hardware.pulseaudio.enable = true;
+    hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
+    hardware.opengl.enable = true;
 
-    programs.gnupg.agent = {
+    # SOUND
+    security.rtkit.enable = true;
+    services.pipewire = {
         enable = true;
-        enableSSHSupport = true;
+        alsa.enable = true;
+        alsa.support32Bit = true;
+        pulse.enable = true;
     };
 
     # SERVICES
@@ -115,7 +124,7 @@
 	};
 
     system = {
-		autoUpgrade.enable = false;
+		autoUpgrade.enable = true;
 	};
 
     virtualisation = {
@@ -129,7 +138,7 @@
 	};
 
     security = {
-		sudo.wheelNeedsPassword = false;
+		sudo.wheelNeedsPassword = true;
     };
 
     home-manager = {

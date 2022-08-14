@@ -1,10 +1,14 @@
 { config, pkgs, lib, ... }: {
 	home = {
         packages = with pkgs; [
-				pavucontrol flameshot
-				discord element-desktop
+				pavucontrol
+				discord 
+				element-desktop
 				git 
-				python3 direnv anydesk
+				python3 
+				direnv 
+				anydesk
+				easyeffects
 		];
 		sessionVariables = {
 			EDITOR = "nvim";
@@ -15,6 +19,14 @@
 	xdg = {
 		enable = true;
 		userDirs.enable = true;
+
+		configFile."alacritty/config.yml".source = ./dots/alacritty/alacritty.yml;
+		configFile."dunst/dunstrc".source = ./dots/dunst/dunstrc;
+		configFile."i3/config".source = ./dots/i3/config;
+		configFile."neofetch/config.conf".source = ./dots/neofetch/config.conf;
+		configFile."polybar/config.ini".source = ./dots/polybar/config.ini;
+		configFile."rofi/config.rasi".source = ./dots/rofi/config.rasi;
+		configFile."rofi/slate.rasi".source = ./dots/rofi/slate.rasi;
 	};
 
 	fonts.fontconfig.enable = true;
@@ -40,6 +52,18 @@
 		obs-studio = {
 			enable = true;
 		};
+
+		git = {
+			enable = true;
+			userName  = "MarcelWalk";
+			userEmail = "walk.marcel.97[at]googlemail.com";
+  	};
+
+		steam = {
+			enable = true;
+			remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+			dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  	};
 
 		zsh = {
 			enable = true;
